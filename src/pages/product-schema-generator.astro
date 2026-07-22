@@ -1,0 +1,225 @@
+---
+import Layout from '../layouts/Layout.astro';
+import FaqAccordion from '../components/FaqAccordion.astro';
+
+const jsonLd = [
+  "{\"@context\": \"https://schema.org\", \"@type\": \"WebApplication\", \"name\": \"Product Schema Generator\", \"alternateName\": \"Commerce AI Product Schema Generator\", \"description\": \"Free tool to generate valid Product JSON-LD structured data for e-commerce product pages, covering core fields, pricing, and availability.\", \"url\": \"https://commerceai.online/product-schema-generator\", \"applicationCategory\": \"DeveloperApplication\", \"operatingSystem\": \"Any\", \"browserRequirements\": \"Requires JavaScript\", \"softwareVersion\": \"1.0\", \"offers\": {\"@type\": \"Offer\", \"price\": \"0\", \"priceCurrency\": \"USD\"}, \"author\": {\"@type\": \"Organization\", \"name\": \"Commerce AI\", \"url\": \"https://commerceai.online\"}, \"screenshot\": \"https://commerceai.online/og-image.png\"}",
+  "{\"@context\": \"https://schema.org\", \"@type\": \"FAQPage\", \"mainEntity\": [{\"@type\": \"Question\", \"name\": \"What is Product schema (JSON-LD)?\", \"acceptedAnswer\": {\"@type\": \"Answer\", \"text\": \"Product schema is machine-readable structured data, written in JSON-LD, that describes a product's name, price, availability, and other details in a format search engines and AI shopping agents can parse directly from your page.\"}}, {\"@type\": \"Question\", \"name\": \"Why does my store need structured data?\", \"acceptedAnswer\": {\"@type\": \"Answer\", \"text\": \"Without it, Google and AI agents have to guess at your product details from visible page text. Valid Product schema makes you eligible for rich results like price and availability snippets in search, and it's increasingly how AI shopping agents read store catalogs.\"}}, {\"@type\": \"Question\", \"name\": \"Is this tool free to use?\", \"acceptedAnswer\": {\"@type\": \"Answer\", \"text\": \"Yes, completely free, no signup required. Fill in your product details and copy the generated code directly into your site.\"}}, {\"@type\": \"Question\", \"name\": \"Where do I paste the generated code?\", \"acceptedAnswer\": {\"@type\": \"Answer\", \"text\": \"Paste the generated script tag anywhere in the head or body of your product page's HTML. Placement varies by platform \\u2014 Shopify uses a Liquid snippet, WooCommerce uses a PHP hook, and Magento requires a template override.\"}}, {\"@type\": \"Question\", \"name\": \"Does this work for headless or custom-built stores?\", \"acceptedAnswer\": {\"@type\": \"Answer\", \"text\": \"Yes. The generated JSON-LD is platform-agnostic, so for a headless storefront (Next.js, Nuxt, or a custom build) you inject the same schema object server-side at the point your product page already renders.\"}}]}",
+];
+---
+
+<Layout
+    title={"Product Schema Generator — Free JSON-LD Tool | Commerce AI"}
+    description={"Free Product schema (JSON-LD) generator for e-commerce. Create valid structured data for Google Rich Results and AI shopping agents in seconds — no signup."}
+    canonical={"https://commerceai.online/product-schema-generator"}
+    keywords={"product schema generator, JSON-LD generator, product structured data, schema.org product, google rich results, ecommerce SEO tool, AI shopping agents"}
+    ogTitle={"Product Schema Generator — Free JSON-LD Tool for E-commerce"}
+    ogDescription={"Generate valid Product structured data (JSON-LD) for your store in seconds. Free, no signup, works for Shopify, WooCommerce, Magento, and headless storefronts."}
+    jsonLd={jsonLd}
+>
+    <main>
+        <section class="page-header">
+                    <div class="orb orb-1"></div>
+                    <div class="orb orb-2"></div>
+                    <h1>Product Schema <span class="gradient-text">Generator</span></h1>
+                    <p>Generate valid Product JSON-LD structured data for Google Rich Results and AI shopping agents — free, no signup.</p>
+                </section>
+
+                <section class="schema-tool-section">
+                    <div class="schema-tool-grid">
+                        <!-- Form column -->
+                        <div>
+                            <div class="schema-tool-card">
+                                <h2>Core details</h2>
+                                <div class="schema-field-grid two-col">
+                                    <div class="form-group">
+                                        <label for="sg-name">Product name<span class="required-mark">*</span></label>
+                                        <input type="text" id="sg-name" placeholder="Ceramic Pour-Over Coffee Dripper" autocomplete="off">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sg-brand">Brand</label>
+                                        <input type="text" id="sg-brand" placeholder="Acme Goods" autocomplete="off">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sg-url">Product URL<span class="required-mark">*</span> <span class="field-hint">canonical page</span></label>
+                                        <input type="text" id="sg-url" placeholder="https://yourstore.com/products/example" autocomplete="off">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sg-image">Image URL<span class="required-mark">*</span> <span class="field-hint">at least 1</span></label>
+                                        <input type="text" id="sg-image" placeholder="https://yourstore.com/images/example.jpg" autocomplete="off">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sg-sku">SKU</label>
+                                        <input type="text" id="sg-sku" placeholder="SKU-1234" autocomplete="off">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sg-mpn">MPN</label>
+                                        <input type="text" id="sg-mpn" placeholder="MPN-5678" autocomplete="off">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sg-gtin">GTIN / UPC / EAN / ISBN</label>
+                                        <input type="text" id="sg-gtin" placeholder="0123456789012" autocomplete="off">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sg-condition">Condition</label>
+                                        <select id="sg-condition">
+                                            <option value="">Not specified</option>
+                                            <option value="NewCondition">New</option>
+                                            <option value="UsedCondition">Used</option>
+                                            <option value="RefurbishedCondition">Refurbished</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="margin-top:18px">
+                                    <label for="sg-description">Description</label>
+                                    <textarea id="sg-description" placeholder="Short, factual description of the product."></textarea>
+                                </div>
+                            </div>
+
+                            <div class="schema-tool-card">
+                                <h2>Price &amp; availability</h2>
+                                <div class="schema-field-grid two-col">
+                                    <div class="form-group">
+                                        <label for="sg-price">Price<span class="required-mark">*</span></label>
+                                        <input type="text" id="sg-price" placeholder="49.99" inputmode="decimal" autocomplete="off">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sg-currency">Currency<span class="required-mark">*</span></label>
+                                        <select id="sg-currency">
+                                            <option value="USD">USD</option>
+                                            <option value="EUR">EUR</option>
+                                            <option value="GBP">GBP</option>
+                                            <option value="CAD">CAD</option>
+                                            <option value="AUD">AUD</option>
+                                            <option value="INR">INR</option>
+                                            <option value="JPY">JPY</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sg-availability">Availability<span class="required-mark">*</span></label>
+                                        <select id="sg-availability">
+                                            <option value="InStock">In stock</option>
+                                            <option value="OutOfStock">Out of stock</option>
+                                            <option value="PreOrder">Pre-order</option>
+                                            <option value="LimitedAvailability">Limited availability</option>
+                                            <option value="BackOrder">Back order</option>
+                                            <option value="Discontinued">Discontinued</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sg-price-valid-until">Price valid until <span class="field-hint">optional</span></label>
+                                        <input type="date" id="sg-price-valid-until">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Output column -->
+                        <div>
+                            <div class="schema-tool-card">
+                                <h2>Schema readiness</h2>
+                                <div class="readiness-progress-track">
+                                    <div class="readiness-progress-fill" id="sgReadinessFill"></div>
+                                </div>
+                                <p class="readiness-count" id="sgReadinessCount">0 of 6 required fields ready</p>
+                                <div class="readiness-list" id="sgReadinessList"></div>
+                            </div>
+
+                            <div class="schema-tool-card">
+                                <div class="json-output-header">
+                                    <h2 style="margin-bottom:0">JSON-LD output</h2>
+                                    <button class="copy-json-btn" id="sgCopyBtn" disabled>Copy code</button>
+                                </div>
+                                <pre class="schema-output-pre"><code id="sgOutputCode"></code></pre>
+                                <p class="schema-fill-note" id="sgFillNote">Fill in the required fields to enable copy.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Info Section -->
+                <section class="info-section">
+                    <h2 class="info-title" style="text-align:center">What is Product Schema?</h2>
+                    <p class="info-subtitle" style="text-align:center;max-width:640px;margin:0 auto 48px">Structured data that tells search engines and AI shopping agents exactly what you're selling.</p>
+
+                    <div class="info-grid">
+                        <div class="info-card">
+                            <div class="info-icon" role="img" aria-label="Search icon">🔍</div>
+                            <h3>Google Rich Results</h3>
+                            <p>Valid Product schema makes your listing eligible for price, availability, and rating snippets directly in Google Search results.</p>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-icon" role="img" aria-label="Robot icon">🤖</div>
+                            <h3>AI Shopping Agents</h3>
+                            <p>AI agents increasingly read structured data instead of rendered pages to understand what a store sells and at what price.</p>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-icon" role="img" aria-label="Code icon">🧩</div>
+                            <h3>Platform-agnostic</h3>
+                            <p>The output is standard JSON-LD — it works on Shopify, WooCommerce, Magento, or a fully custom / headless storefront.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- FAQ Section -->
+                <section class="faq-section">
+                    <div class="faq-container">
+                        <h2 class="info-title" style="text-align:center">Frequently Asked Questions</h2>
+                        <p class="info-subtitle" style="text-align:center;max-width:600px;margin:0 auto 48px">Everything you need to know about Product schema and this tool.</p>
+
+                        <div class="faq-item">
+                            <button class="faq-question">
+                                What is Product schema (JSON-LD)?
+                                <svg class="faq-chevron" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><polyline points="6 9 12 15 18 9"/></svg>
+                            </button>
+                            <div class="faq-answer"><div class="faq-answer-inner">
+                                Product schema is machine-readable structured data, written in JSON-LD, that describes a product's name, price, availability, and other details in a format search engines and AI shopping agents can parse directly from your page.
+                            </div></div>
+                        </div>
+
+                        <div class="faq-item">
+                            <button class="faq-question">
+                                Why does my store need structured data?
+                                <svg class="faq-chevron" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><polyline points="6 9 12 15 18 9"/></svg>
+                            </button>
+                            <div class="faq-answer"><div class="faq-answer-inner">
+                                Without it, Google and AI agents have to guess at your product details from visible page text. Valid Product schema makes you eligible for rich results like price and availability snippets in search, and it's increasingly how AI shopping agents read store catalogs.
+                            </div></div>
+                        </div>
+
+                        <div class="faq-item">
+                            <button class="faq-question">
+                                Is this tool free to use?
+                                <svg class="faq-chevron" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><polyline points="6 9 12 15 18 9"/></svg>
+                            </button>
+                            <div class="faq-answer"><div class="faq-answer-inner">
+                                Yes, completely free, no signup required. Fill in your product details and copy the generated code directly into your site.
+                            </div></div>
+                        </div>
+
+                        <div class="faq-item">
+                            <button class="faq-question">
+                                Where do I paste the generated code?
+                                <svg class="faq-chevron" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><polyline points="6 9 12 15 18 9"/></svg>
+                            </button>
+                            <div class="faq-answer"><div class="faq-answer-inner">
+                                Paste the generated script tag anywhere in the <code>&lt;head&gt;</code> or <code>&lt;body&gt;</code> of your product page's HTML. Placement varies by platform — Shopify uses a Liquid snippet, WooCommerce uses a PHP hook, and Magento requires a template override.
+                            </div></div>
+                        </div>
+
+                        <div class="faq-item">
+                            <button class="faq-question">
+                                Does this work for headless or custom-built stores?
+                                <svg class="faq-chevron" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><polyline points="6 9 12 15 18 9"/></svg>
+                            </button>
+                            <div class="faq-answer"><div class="faq-answer-inner">
+                                Yes. The generated JSON-LD is platform-agnostic, so for a headless storefront (Next.js, Nuxt, or a custom build) you inject the same schema object server-side at the point your product page already renders.
+                            </div></div>
+                        </div>
+                    </div>
+                </section>
+    </main>
+    <FaqAccordion />
+    <script>import '../scripts/product-schema-generator.js';</script>
+
+</Layout>

@@ -1,0 +1,320 @@
+---
+import Layout from '../layouts/Layout.astro';
+import FaqAccordion from '../components/FaqAccordion.astro';
+
+const jsonLd = [
+  "{\"@context\": \"https://schema.org\", \"@type\": \"WebApplication\", \"name\": \"UCP Compliance Checker\", \"alternateName\": \"Commerce AI UCP Checker\", \"description\": \"Free tool to check if your online store is compliant with Google's Universal Commerce Protocol (UCP). Runs 15 automated compliance checks on your /.well-known/ucp profile.\", \"url\": \"https://commerceai.online/\", \"applicationCategory\": \"DeveloperApplication\", \"operatingSystem\": \"Any\", \"browserRequirements\": \"Requires JavaScript\", \"softwareVersion\": \"1.0\", \"offers\": {\"@type\": \"Offer\", \"price\": \"0\", \"priceCurrency\": \"USD\"}, \"author\": {\"@type\": \"Organization\", \"name\": \"Commerce AI\", \"url\": \"https://commerceai.online\"}, \"screenshot\": \"https://commerceai.online/og-image.png\"}",
+  "{\"@context\": \"https://schema.org\", \"@type\": \"FAQPage\", \"mainEntity\": [{\"@type\": \"Question\", \"name\": \"What is the Universal Commerce Protocol (UCP)?\", \"acceptedAnswer\": {\"@type\": \"Answer\", \"text\": \"The Universal Commerce Protocol (UCP) is an open standard developed by Google that enables AI agents to discover, browse, and transact with online stores. Stores publish a JSON profile at /.well-known/ucp declaring their services and capabilities.\"}}, {\"@type\": \"Question\", \"name\": \"How do I check if my store is UCP compliant?\", \"acceptedAnswer\": {\"@type\": \"Answer\", \"text\": \"Enter your store URL in the Commerce AI UCP Compliance Checker. The tool fetches your /.well-known/ucp profile and runs 15 automated checks covering profile existence, JSON validity, service declarations, HTTPS security, naming conventions, and more.\"}}, {\"@type\": \"Question\", \"name\": \"Is the UCP Compliance Checker free?\", \"acceptedAnswer\": {\"@type\": \"Answer\", \"text\": \"Yes, the Commerce AI UCP Compliance Checker is completely free. No sign-up required. Simply enter your store URL and get instant results.\"}}]}",
+];
+---
+
+<Layout
+    title={"UCP Compliance Checker — Free Tool by Commerce AI | Check UCP Readiness"}
+    description={"Free UCP compliance checker. Validate your store's Universal Commerce Protocol profile at /.well-known/ucp for AI-powered agentic commerce."}
+    canonical={"https://commerceai.online/"}
+    keywords={"UCP compliance checker, Universal Commerce Protocol, Google UCP, AI commerce, agentic commerce, well-known ucp, UCP validator, Gemini shopping, ecommerce AI, UCP profile checker"}
+    ogTitle={"UCP Compliance Checker — Is Your Store AI-Commerce Ready?"}
+    ogDescription={"Free tool to check if your online store is compliant with Google's Universal Commerce Protocol (UCP). Run 15 automated checks on your /.well-known/ucp profile in seconds."}
+    jsonLd={jsonLd}
+>
+    <main>
+        <!-- Hero Section -->
+                <section class="hero">
+                    <div class="hero-bg-orbs">
+                        <div class="orb orb-1"></div>
+                        <div class="orb orb-2"></div>
+                        <div class="orb orb-3"></div>
+                    </div>
+            
+                    <div class="hero-content">
+                        <div class="badge">
+                            <span class="badge-dot"></span> Powered by Universal Commerce Protocol
+                        </div>
+                
+                        <h1>Is Your Store <span class="gradient-text">UCP Ready?</span></h1>
+                        <p class="subtitle">Check if your online store is compliant with Google's Universal Commerce Protocol for AI-powered commerce</p>
+                
+                        <form id="scanForm" class="search-form">
+                            <div class="input-wrapper">
+                                <input type="text" id="urlInput" placeholder="Enter your store URL (e.g., store.example.com)" required autocomplete="off" />
+                                <button type="submit" class="scan-button">
+                                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="11" cy="11" r="8"></circle>
+                                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                    </svg>
+                                    Scan Now
+                                </button>
+                            </div>
+                            <p class="helper-text">We'll check for a valid UCP profile at /.well-known/ucp</p>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- Loading Section -->
+                <section class="loading-section" id="loadingSection" hidden>
+                    <div class="scanner-container">
+                        <div class="scanner-ring"></div>
+                        <div class="scanner-icon">🔍</div>
+                    </div>
+                    <h2>Scanning your store...</h2>
+            
+                    <div class="progress-steps">
+                        <div class="step active" id="step1">
+                            <div class="step-indicator"></div>
+                            <span class="step-label">Connecting</span>
+                        </div>
+                        <div class="step-line"></div>
+                        <div class="step" id="step2">
+                            <div class="step-indicator"></div>
+                            <span class="step-label">Fetching Profile</span>
+                        </div>
+                        <div class="step-line"></div>
+                        <div class="step" id="step3">
+                            <div class="step-indicator"></div>
+                            <span class="step-label">Analyzing</span>
+                        </div>
+                        <div class="step-line"></div>
+                        <div class="step" id="step4">
+                            <div class="step-indicator"></div>
+                            <span class="step-label">Done</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Results Section -->
+                <section class="results-section" id="resultsSection" hidden>
+                    <div class="results-container">
+                        <!-- Score Card -->
+                        <div class="score-card">
+                            <div class="gauge-container">
+                                <svg class="gauge-svg" viewBox="0 0 200 200">
+                                    <circle class="gauge-bg" cx="100" cy="100" r="80"></circle>
+                                    <circle class="gauge-fill" id="gaugeFill" cx="100" cy="100" r="80"></circle>
+                                </svg>
+                                <div class="gauge-text">
+                                    <span class="score-value" id="scoreValue">0</span>
+                                    <span class="score-symbol">%</span>
+                                </div>
+                            </div>
+                    
+                            <div class="score-details">
+                                <div class="status-badge" id="statusBadge">PENDING</div>
+                                <h3 class="scanned-url" id="scannedUrlDisplay">example.com</h3>
+                            </div>
+                        </div>
+
+                        <!-- Stats Row -->
+                        <div class="stats-row">
+                            <div class="stat-card stat-pass">
+                                <div class="stat-icon">✅</div>
+                                <div class="stat-content">
+                                    <span class="stat-number" id="statPass">0</span>
+                                    <span class="stat-label">Passed</span>
+                                </div>
+                            </div>
+                            <div class="stat-card stat-warn">
+                                <div class="stat-icon">⚠️</div>
+                                <div class="stat-content">
+                                    <span class="stat-number" id="statWarn">0</span>
+                                    <span class="stat-label">Warnings</span>
+                                </div>
+                            </div>
+                            <div class="stat-card stat-fail">
+                                <div class="stat-icon">❌</div>
+                                <div class="stat-content">
+                                    <span class="stat-number" id="statFail">0</span>
+                                    <span class="stat-label">Failed</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Checks Grid -->
+                        <div class="checks-grid" id="checksGrid">
+                            <!-- Cards will be injected via JS -->
+                        </div>
+
+                        <!-- Raw JSON Section -->
+                        <div class="raw-json-section">
+                            <button class="toggle-json-btn" id="toggleJsonBtn">
+                                <span>View Raw UCP Profile</span>
+                                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="chevron">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </button>
+                            <div class="raw-json-container" id="rawJsonContainer" hidden>
+                                <pre><code id="rawJson"></code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Error Section -->
+                <section class="error-section" id="errorSection" hidden>
+                    <div class="error-card">
+                        <div class="error-icon">
+                            <svg viewBox="0 0 24 24" width="48" height="48" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="8" x2="12" y2="12"></line>
+                                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                            </svg>
+                        </div>
+                        <h2 id="errorTitle">Connection Failed</h2>
+                        <p id="errorMessage">Could not reach the specified URL. Please make sure the store is online.</p>
+                        <button class="try-again-btn" id="tryAgainBtn">Try Again</button>
+                    </div>
+                </section>
+
+                <!-- Info Section -->
+                <section class="info-section">
+                    <h2 class="info-title">What is UCP?</h2>
+                    <p class="info-subtitle">The Universal Commerce Protocol is a standard that allows AI agents to interface seamlessly with e-commerce platforms.</p>
+            
+                    <div class="info-grid">
+                        <div class="info-card">
+                            <div class="info-icon" role="img" aria-label="Robot icon representing AI-powered commerce">🤖</div>
+                            <h3>AI-Powered Commerce</h3>
+                            <p>Enable AI agents like Gemini to discover, browse, and purchase from your store autonomously.</p>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-icon" role="img" aria-label="Link icon representing open standards">🔗</div>
+                            <h3>Open Standard</h3>
+                            <p>Built on open protocols (A2A, MCP, AP2) for universal interoperability across the web.</p>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-icon" role="img" aria-label="Shield icon representing security and privacy">🛡️</div>
+                            <h3>Secure & Private</h3>
+                            <p>Decentralized trust model with built-in payment security and verifiable claims.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SEO Content Section -->
+                <section class="seo-content-section">
+                    <div class="seo-content">
+                        <h2>The Complete Guide to UCP Compliance Checking</h2>
+                
+                        <article>
+                            <h3>What is the Universal Commerce Protocol?</h3>
+                            <p>The <strong>Universal Commerce Protocol (UCP)</strong> is an open standard developed by Google that fundamentally changes how online stores interact with AI agents. Instead of relying solely on human browsers, UCP enables AI assistants like Google Gemini, autonomous shopping agents, and other agentic systems to discover, browse, compare, and complete purchases from your store—entirely without human intervention.</p>
+                            <p>At its core, UCP works through a simple yet powerful mechanism: every compliant store publishes a structured JSON profile at a well-known URL path (<code>/.well-known/ucp</code>). This profile declares what services the store offers, what capabilities are available (such as product search, cart management, and checkout), and how AI agents should connect. Think of it as a machine-readable storefront that tells AI agents exactly what your store can do and how to do it.</p>
+                        </article>
+
+                        <article>
+                            <h3>Why UCP Compliance Matters for Your Business</h3>
+                            <p>The shift toward <strong>agentic commerce</strong>—where AI agents autonomously shop on behalf of consumers—is accelerating rapidly. Google has already begun integrating UCP into its ecosystem, meaning stores that adopt the protocol early will gain a significant competitive advantage. When a user asks Gemini to “find the best running shoes under $150,” UCP-compliant stores are the ones that get surfaced, queried, and transacted with.</p>
+                            <p>Without UCP compliance, your store remains invisible to this new generation of AI-powered shopping experiences. As more consumers delegate routine purchases to AI agents, the stakes grow higher. Early adoption positions your store at the forefront of this transformation, capturing traffic and revenue that competitors miss entirely.</p>
+                        </article>
+
+                        <article>
+                            <h3>How Our UCP Compliance Checker Works</h3>
+                            <p>The <strong>Commerce AI UCP Compliance Checker</strong> is a free, instant diagnostic tool that analyzes your store's UCP readiness. Simply enter your store URL and our tool performs <strong>15 automated checks</strong> across multiple compliance categories:</p>
+                            <ul>
+                                <li><strong>Profile Discovery:</strong> Verifies that your <code>/.well-known/ucp</code> endpoint exists and returns a valid HTTP 200 response with proper JSON formatting.</li>
+                                <li><strong>Structure Validation:</strong> Confirms that your UCP profile contains the required root object, protocol version in the correct date format, and properly structured service declarations.</li>
+                                <li><strong>Service & Capability Checks:</strong> Ensures your services follow the correct schema with version, transport, and endpoint fields, and that capabilities include name, version, spec, and schema references.</li>
+                                <li><strong>Security Verification:</strong> Validates that all endpoints use HTTPS, your store itself is served over a secure connection, and the response includes the correct <code>application/json</code> content type.</li>
+                                <li><strong>Naming Convention Compliance:</strong> Checks that service and capability names follow the required reverse-domain format (e.g., <code>dev.ucp.shopping</code>), ensuring interoperability across the ecosystem.</li>
+                            </ul>
+                            <p>Each check is assigned a severity level—<strong>Critical</strong>, <strong>Major</strong>, <strong>Minor</strong>, or <strong>Recommended</strong>—and weighted accordingly. Your overall compliance score is calculated as a percentage, giving you a clear, actionable picture of where your store stands and what needs fixing.</p>
+                        </article>
+
+                        <article>
+                            <h3>Getting Started with UCP Implementation</h3>
+                            <p>If your store doesn’t yet have a UCP profile, getting started is straightforward. You need to create a JSON file at the <code>/.well-known/ucp</code> path on your domain that declares your store's services and capabilities according to the UCP specification. The profile must include a protocol version, at least one service with a valid HTTPS endpoint, and capability declarations that reference the appropriate schemas.</p>
+                            <p>Once your profile is in place, return to Commerce AI and run the <strong>UCP compliance checker</strong> again. Our tool provides detailed feedback on every check, including specific error messages and remediation guidance so you know exactly what to fix. The goal is to achieve a score of 80% or higher to be considered fully compliant and eligible for AI agent discovery.</p>
+                            <p>UCP is built on established open protocols including <strong>Agent-to-Agent (A2A)</strong> for inter-agent communication, <strong>Model Context Protocol (MCP)</strong> for data exchange, and <strong>AP2</strong> for payment processing. This layered architecture ensures that UCP is not just a Google-specific solution but an open ecosystem that any AI platform can participate in.</p>
+                        </article>
+                    </div>
+                </section>
+
+                <!-- FAQ Section -->
+                <section class="faq-section">
+                    <div class="faq-container">
+                        <h2 class="info-title" style="text-align:center">Frequently Asked Questions</h2>
+                        <p class="info-subtitle" style="text-align:center;max-width:600px;margin:0 auto 48px">Everything you need to know about UCP compliance and our checker tool.</p>
+
+                        <div class="faq-item">
+                            <button class="faq-question">
+                                What is the Universal Commerce Protocol (UCP)?
+                                <svg class="faq-chevron" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><polyline points="6 9 12 15 18 9"/></svg>
+                            </button>
+                            <div class="faq-answer"><div class="faq-answer-inner">
+                                UCP is an open standard developed by Google that allows AI agents — such as Google Gemini — to discover, browse, and purchase products from online stores. Stores publish a machine-readable JSON profile at <code>/.well-known/ucp</code> that declares their services, capabilities, and endpoints.
+                            </div></div>
+                        </div>
+
+                        <div class="faq-item">
+                            <button class="faq-question">
+                                How does the UCP Compliance Checker work?
+                                <svg class="faq-chevron" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><polyline points="6 9 12 15 18 9"/></svg>
+                            </button>
+                            <div class="faq-answer"><div class="faq-answer-inner">
+                                Enter your store URL and our tool fetches the <code>/.well-known/ucp</code> endpoint from your domain. It then runs 15 automated checks covering profile existence, JSON validity, service structure, naming conventions, HTTPS security, and more. You get an instant compliance score out of 100%.
+                            </div></div>
+                        </div>
+
+                        <div class="faq-item">
+                            <button class="faq-question">
+                                Is the UCP Compliance Checker free to use?
+                                <svg class="faq-chevron" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><polyline points="6 9 12 15 18 9"/></svg>
+                            </button>
+                            <div class="faq-answer"><div class="faq-answer-inner">
+                                Yes, completely free. No sign-up, no account, no limits. Just enter your store URL and get instant results. We built this tool to help the e-commerce community adopt the UCP standard faster.
+                            </div></div>
+                        </div>
+
+                        <div class="faq-item">
+                            <button class="faq-question">
+                                What score do I need to be considered UCP compliant?
+                                <svg class="faq-chevron" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><polyline points="6 9 12 15 18 9"/></svg>
+                            </button>
+                            <div class="faq-answer"><div class="faq-answer-inner">
+                                A score of <strong>80% or higher</strong> is considered fully compliant. Scores between 50–79% indicate partial compliance — your store has the basics but is missing some important elements. Below 50% means your store is not yet ready for AI agent discovery.
+                            </div></div>
+                        </div>
+
+                        <div class="faq-item">
+                            <button class="faq-question">
+                                My store doesn't have a UCP profile yet. How do I create one?
+                                <svg class="faq-chevron" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><polyline points="6 9 12 15 18 9"/></svg>
+                            </button>
+                            <div class="faq-answer"><div class="faq-answer-inner">
+                                Create a JSON file at the path <code>/.well-known/ucp</code> on your domain. The file must include a root <code>ucp</code> object with a version field (YYYY-MM-DD format), at least one service declaration with an HTTPS endpoint, and capability descriptions. Refer to the <a href="https://ucp.dev/specification/overview" target="_blank" rel="noopener">official UCP specification</a> for the full schema.
+                            </div></div>
+                        </div>
+
+                        <div class="faq-item">
+                            <button class="faq-question">
+                                What platforms support UCP?
+                                <svg class="faq-chevron" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><polyline points="6 9 12 15 18 9"/></svg>
+                            </button>
+                            <div class="faq-answer"><div class="faq-answer-inner">
+                                UCP is platform-agnostic — any online store can implement it regardless of the e-commerce platform (Shopify, WooCommerce, Magento, custom-built, etc.). You just need the ability to serve a JSON file at a well-known URL path on your domain.
+                            </div></div>
+                        </div>
+
+                        <div class="faq-item">
+                            <button class="faq-question">
+                                Does my store need HTTPS for UCP compliance?
+                                <svg class="faq-chevron" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><polyline points="6 9 12 15 18 9"/></svg>
+                            </button>
+                            <div class="faq-answer"><div class="faq-answer-inner">
+                                Yes, HTTPS is a critical requirement. Both your store domain and all service endpoints declared in your UCP profile must use HTTPS. This ensures secure communication between AI agents and your store, protecting customer data during transactions.
+                            </div></div>
+                        </div>
+
+                        <div class="faq-item">
+                            <button class="faq-question">
+                                How often should I check my UCP compliance?
+                                <svg class="faq-chevron" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><polyline points="6 9 12 15 18 9"/></svg>
+                            </button>
+                            <div class="faq-answer"><div class="faq-answer-inner">
+                                We recommend running a compliance check after any changes to your UCP profile, after deploying your store, and periodically (monthly) to ensure nothing has broken. The UCP specification may also evolve, so staying up-to-date ensures continued compatibility with AI agents.
+                            </div></div>
+                        </div>
+                    </div>
+                </section>
+    </main>
+    <FaqAccordion />
+    <script>import '../scripts/app.js';</script>
+</Layout>
