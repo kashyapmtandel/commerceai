@@ -189,10 +189,10 @@ import { runChecks } from './checks.js';
   // ─── Check Card Rendering ─────────────────────────────────────────
   function getStatusIcon(status) {
     switch (status) {
-      case 'pass': return '<span class="check-icon" style="color:var(--accent-green)">✓</span>';
-      case 'warn': return '<span class="check-icon" style="color:var(--accent-amber)">⚠</span>';
-      case 'fail': return '<span class="check-icon" style="color:var(--accent-red)">✕</span>';
-      case 'skip': return '<span class="check-icon" style="color:var(--text-muted)">—</span>';
+      case 'pass': return '<span class="check-icon text-green">✓</span>';
+      case 'warn': return '<span class="check-icon text-amber">⚠</span>';
+      case 'fail': return '<span class="check-icon text-red">✕</span>';
+      case 'skip': return '<span class="check-icon text-muted">—</span>';
       default: return '';
     }
   }

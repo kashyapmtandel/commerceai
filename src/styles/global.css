@@ -1910,3 +1910,13 @@ code {
   position: relative;
   z-index: 1;
 }
+
+/* CSP Utility Classes */
+.text-center { text-align: center; }
+.section-subtitle { max-width: 640px; margin: 0 auto 48px; }
+.mt-18 { margin-top: 18px; }
+.mb-0 { margin-bottom: 0; }
+.text-green { color: var(--accent-green); }
+.text-amber { color: var(--accent-amber); }
+.text-red { color: var(--accent-red); }
+.text-muted { color: var(--text-muted); }
