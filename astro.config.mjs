@@ -8,4 +8,8 @@ export default defineConfig({
   },
   output: 'static', // pages are static by default; src/pages/api/check.js opts out via `export const prerender = false`
   adapter: vercel(),
+  security: {
+    checkOrigin: true,
+    csp: true
+  }
 });
