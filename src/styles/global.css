@@ -1204,7 +1204,7 @@ code {
 
 .footer-col a {
   display: inline-block;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-size: 0.875rem;
   margin: 0;
   transition: color 0.2s;
@@ -1230,7 +1230,7 @@ code {
 }
 
 .footer-links a {
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-weight: 500;
   transition: color 0.2s ease;
 }
@@ -1240,7 +1240,7 @@ code {
 }
 
 .copyright, .built-with {
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-size: 0.875rem;
 }
 
