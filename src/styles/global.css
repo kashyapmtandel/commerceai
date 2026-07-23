@@ -1916,6 +1916,48 @@ code {
 .section-subtitle { max-width: 640px; margin: 0 auto 48px; }
 .mt-18 { margin-top: 18px; }
 .mb-0 { margin-bottom: 0; }
+
+.platform-tabs {
+  display: flex;
+  gap: 6px;
+  margin: 14px 0 16px;
+  flex-wrap: wrap;
+}
+
+.platform-tab {
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border-default);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.platform-tab:hover {
+  border-color: var(--border-active);
+  color: var(--text-primary);
+}
+
+.platform-tab.active {
+  background: var(--gradient-blue);
+  border-color: transparent;
+  color: #fff;
+}
+
+.platform-instructions {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  margin-top: 10px;
+  line-height: 1.5;
+}
+
+.platform-instructions strong {
+  color: var(--text-secondary);
+}
 .text-green { color: var(--accent-green); }
 .text-amber { color: var(--accent-amber); }
 .text-red { color: var(--accent-red); }

@@ -127,12 +127,18 @@ const jsonLd = [
                             </div>
 
                             <div class="schema-tool-card">
-                                <div class="form-group mt-18">
-                                    <h2 class="mb-0">JSON-LD output</h2>
+                                <div class="json-output-header">
+                                    <h2 class="mb-0">Export code</h2>
                                     <button class="copy-json-btn" id="sgCopyBtn" disabled>Copy code</button>
+                                </div>
+                                <div class="platform-tabs" role="tablist" aria-label="Export format">
+                                    <button type="button" class="platform-tab active" data-platform="generic">Generic</button>
+                                    <button type="button" class="platform-tab" data-platform="shopify">Shopify</button>
+                                    <button type="button" class="platform-tab" data-platform="woocommerce">WooCommerce</button>
                                 </div>
                                 <pre class="schema-output-pre"><code id="sgOutputCode"></code></pre>
                                 <p class="schema-fill-note" id="sgFillNote">Fill in the required fields to enable copy.</p>
+                                <p class="platform-instructions" id="sgPlatformInstructions"></p>
                             </div>
                         </div>
                     </div>

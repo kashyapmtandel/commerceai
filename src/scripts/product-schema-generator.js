@@ -23,6 +23,10 @@ document.addEventListener('DOMContentLoaded', function () {
   const outputCode = document.getElementById('sgOutputCode');
   const copyBtn = document.getElementById('sgCopyBtn');
   const fillNote = document.getElementById('sgFillNote');
+  const platformInstructions = document.getElementById('sgPlatformInstructions');
+  const platformTabs = document.querySelectorAll('.platform-tab');
+
+  let currentPlatform = 'generic';
 
   // ─── Helpers ──────────────────────────────────────────────────
   function escapeHtml(str) {
@@ -96,6 +100,58 @@ document.addEventListener('DOMContentLoaded', function () {
     schema.offers = offers;
 
     return schema;
+  }
+
+  // ─── Platform export templates ─────────────────────────────────
+  // These are drop-in snippets using platform template variables, not the
+  // form's test data — they pull real data automatically for every product.
+  function buildShopifySnippet() {
+    return `{% comment %} Save as snippets/product-schema.liquid, then add {% render 'product-schema' %} to your product template {% endcomment %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "Product",
+  "name": {{ product.title | json }},
+  "image": [{{ product.featured_image | image_url: width: 1200 | json }}],
+  "description": {{ product.description | strip_html | json }},
+  "sku": {{ product.selected_or_first_available_variant.sku | json }},
+  "brand": { "@type": "Brand", "name": {{ product.vendor | json }} },
+  "offers": {
+    "@type": "Offer",
+    "url": {{ shop.url | append: product.url | json }},
+    "priceCurrency": {{ cart.currency.iso_code | json }},
+    "price": {{ product.selected_or_first_available_variant.price | money_without_currency | json }},
+    "availability": "https://schema.org/{% if product.selected_or_first_available_variant.available %}InStock{% else %}OutOfStock{% endif %}"
+  }
+}
+</script>`;
+  }
+
+  function buildWooCommerceSnippet() {
+    return `<?php
+// Add to your active theme's functions.php
+add_action( 'woocommerce_single_product_summary', 'commerceai_product_schema', 5 );
+function commerceai_product_schema() {
+    global $product;
+    if ( ! is_product() || ! $product ) return;
+
+    $schema = [
+        '@context'    => 'https://schema.org/',
+        '@type'       => 'Product',
+        'name'        => get_the_title(),
+        'image'       => [ get_the_post_thumbnail_url( get_the_ID(), 'full' ) ],
+        'description' => wp_strip_all_tags( $product->get_short_description() ?: $product->get_description() ),
+        'sku'         => $product->get_sku(),
+        'offers'      => [
+            '@type'         => 'Offer',
+            'url'           => get_permalink(),
+            'priceCurrency' => get_woocommerce_currency(),
+            'price'         => $product->get_price(),
+            'availability'  => $product->is_in_stock() ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+        ],
+    ];
+    echo '<script type="application/ld+json">' . wp_json_encode( $schema ) . '</script>';
+}`;
   }
 
   // ─── Readiness checklist ──────────────────────────────────────
@@ -199,6 +255,28 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     const allReady = renderReadiness(getChecks(v));
+
+    if (currentPlatform === 'shopify') {
+      const snippet = buildShopifySnippet();
+      outputCode.textContent = snippet;
+      outputCode.dataset.fullOutput = snippet;
+      copyBtn.disabled = false;
+      fillNote.style.display = 'none';
+      platformInstructions.innerHTML = '<strong>Where this goes:</strong> Shopify Admin → Online Store → Themes → Edit code → create <code>snippets/product-schema.liquid</code> with this content, then add <code>{% render \'product-schema\' %}</code> inside <code>sections/main-product.liquid</code>.';
+      return;
+    }
+
+    if (currentPlatform === 'woocommerce') {
+      const snippet = buildWooCommerceSnippet();
+      outputCode.textContent = snippet;
+      outputCode.dataset.fullOutput = snippet;
+      copyBtn.disabled = false;
+      fillNote.style.display = 'none';
+      platformInstructions.innerHTML = '<strong>Where this goes:</strong> WordPress Admin → Appearance → Theme File Editor → your active theme\'s <code>functions.php</code>. Paste at the end of the file. If Yoast SEO or Rank Math already outputs Product schema, disable one to avoid duplicate schema blocks.';
+      return;
+    }
+
+    // Generic (default)
     const schema = buildSchema(v);
     const jsonString = JSON.stringify(schema, null, 2);
     const scriptTag = `<script type="application/ld+json">\n${jsonString}\n</script>`;
@@ -208,7 +286,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
     copyBtn.disabled = !allReady;
     fillNote.style.display = allReady ? 'none' : 'block';
+    platformInstructions.innerHTML = '';
   }
+
+  platformTabs.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      platformTabs.forEach(function (t) { t.classList.remove('active'); });
+      tab.classList.add('active');
+      currentPlatform = tab.dataset.platform;
+      render();
+    });
+  });
 
   Object.keys(form).forEach(function (key) {
     if (form[key]) form[key].addEventListener('input', render);
