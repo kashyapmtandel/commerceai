@@ -12,18 +12,14 @@ export default defineConfig({
     csp: {
       // Astro auto-generates script-src/style-src with hashes for its own
       // bundled/inline scripts. These are additional directives merged in.
+      // Fonts are self-hosted via Fontsource, so no external font-src/style-src needed.
       directives: [
         "default-src 'self'",
         "img-src 'self' data:",
         "connect-src 'self'",
-        "font-src 'self' https://fonts.gstatic.com",
         "object-src 'none'",
         "base-uri 'self'",
       ],
-      styleDirective: {
-        // Overrides the default style-src sources, so 'self' must be re-added explicitly.
-        resources: ["'self'", 'https://fonts.googleapis.com'],
-      },
     },
   },
 });
