@@ -3,7 +3,6 @@ import Layout from '../layouts/Layout.astro';
 import FaqAccordion from '../components/FaqAccordion.astro';
 import ScrollAnimations from '../components/ScrollAnimations.astro';
 
-
 const jsonLd = [
   "{\"@context\": \"https://schema.org\", \"@type\": \"WebApplication\", \"name\": \"Product Schema Generator\", \"alternateName\": \"Commerce AI Product Schema Generator\", \"description\": \"Free tool to generate valid Product JSON-LD structured data for e-commerce product pages, covering core fields, pricing, and availability.\", \"url\": \"https://commerceai.online/product-schema-generator\", \"applicationCategory\": \"DeveloperApplication\", \"operatingSystem\": \"Any\", \"browserRequirements\": \"Requires JavaScript\", \"softwareVersion\": \"1.0\", \"offers\": {\"@type\": \"Offer\", \"price\": \"0\", \"priceCurrency\": \"USD\"}, \"author\": {\"@type\": \"Organization\", \"name\": \"Commerce AI\", \"url\": \"https://commerceai.online\"}, \"screenshot\": \"https://commerceai.online/og-image.png\"}",
   "{\"@context\": \"https://schema.org\", \"@type\": \"FAQPage\", \"mainEntity\": [{\"@type\": \"Question\", \"name\": \"What is Product schema (JSON-LD)?\", \"acceptedAnswer\": {\"@type\": \"Answer\", \"text\": \"Product schema is machine-readable structured data, written in JSON-LD, that describes a product's name, price, availability, and other details in a format search engines and AI shopping agents can parse directly from your page.\"}}, {\"@type\": \"Question\", \"name\": \"Why does my store need structured data?\", \"acceptedAnswer\": {\"@type\": \"Answer\", \"text\": \"Without it, Google and AI agents have to guess at your product details from visible page text. Valid Product schema makes you eligible for rich results like price and availability snippets in search, and it's increasingly how AI shopping agents read store catalogs.\"}}, {\"@type\": \"Question\", \"name\": \"Is this tool free to use?\", \"acceptedAnswer\": {\"@type\": \"Answer\", \"text\": \"Yes, completely free, no signup required. Fill in your product details and copy the generated code directly into your site.\"}}, {\"@type\": \"Question\", \"name\": \"Where do I paste the generated code?\", \"acceptedAnswer\": {\"@type\": \"Answer\", \"text\": \"Paste the generated script tag anywhere in the head or body of your product page's HTML. Placement varies by platform \\u2014 Shopify uses a Liquid snippet, WooCommerce uses a PHP hook, and Magento requires a template override.\"}}, {\"@type\": \"Question\", \"name\": \"Does this work for headless or custom-built stores?\", \"acceptedAnswer\": {\"@type\": \"Answer\", \"text\": \"Yes. The generated JSON-LD is platform-agnostic, so for a headless storefront (Next.js, Nuxt, or a custom build) you inject the same schema object server-side at the point your product page already renders.\"}}]}",
@@ -222,7 +221,6 @@ const jsonLd = [
                 </section>
     </main>
     <FaqAccordion />
-	<ScrollAnimations />
+    <ScrollAnimations />
     <script>import '../scripts/product-schema-generator.js';</script>
-
 </Layout>
