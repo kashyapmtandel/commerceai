@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import FaqAccordion from '../components/FaqAccordion.astro';
+import ScrollAnimations from '../components/ScrollAnimations.astro';
 
 const jsonLd = [
   "{\"@context\": \"https://schema.org\", \"@type\": \"WebApplication\", \"name\": \"Product Schema Generator\", \"alternateName\": \"Commerce AI Product Schema Generator\", \"description\": \"Free tool to generate valid Product JSON-LD structured data for e-commerce product pages, covering core fields, pricing, and availability.\", \"url\": \"https://commerceai.online/product-schema-generator\", \"applicationCategory\": \"DeveloperApplication\", \"operatingSystem\": \"Any\", \"browserRequirements\": \"Requires JavaScript\", \"softwareVersion\": \"1.0\", \"offers\": {\"@type\": \"Offer\", \"price\": \"0\", \"priceCurrency\": \"USD\"}, \"author\": {\"@type\": \"Organization\", \"name\": \"Commerce AI\", \"url\": \"https://commerceai.online\"}, \"screenshot\": \"https://commerceai.online/og-image.png\"}",
@@ -220,6 +221,6 @@ const jsonLd = [
                 </section>
     </main>
     <FaqAccordion />
+    <ScrollAnimations />
     <script>import '../scripts/product-schema-generator.js';</script>
-
 </Layout>

@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import FaqAccordion from '../components/FaqAccordion.astro';
+import ScrollAnimations from '../components/ScrollAnimations.astro';
 
 const jsonLd = [
   "{\"@context\": \"https://schema.org\", \"@type\": \"WebApplication\", \"name\": \"UCP Compliance Checker\", \"alternateName\": \"Commerce AI UCP Checker\", \"description\": \"Free tool to check if your online store is compliant with Google's Universal Commerce Protocol (UCP). Runs 15 automated compliance checks on your /.well-known/ucp profile.\", \"url\": \"https://commerceai.online/\", \"applicationCategory\": \"DeveloperApplication\", \"operatingSystem\": \"Any\", \"browserRequirements\": \"Requires JavaScript\", \"softwareVersion\": \"1.0\", \"offers\": {\"@type\": \"Offer\", \"price\": \"0\", \"priceCurrency\": \"USD\"}, \"author\": {\"@type\": \"Organization\", \"name\": \"Commerce AI\", \"url\": \"https://commerceai.online\"}, \"screenshot\": \"https://commerceai.online/og-image.png\"}",
@@ -316,5 +317,6 @@ const jsonLd = [
                 </section>
     </main>
     <FaqAccordion />
+	<ScrollAnimations />
     <script>import '../scripts/app.js';</script>
 </Layout>
