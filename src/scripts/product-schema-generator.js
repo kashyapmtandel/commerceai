@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const copyBtn = document.getElementById('sgCopyBtn');
   const fillNote = document.getElementById('sgFillNote');
   const platformInstructions = document.getElementById('sgPlatformInstructions');
+  const richResultsLink = document.getElementById('sgRichResultsLink');
   const platformTabs = document.querySelectorAll('.platform-tab');
 
   let currentPlatform = 'generic';
@@ -324,6 +325,17 @@ function commerceai_product_schema() {
     };
 
     const allReady = renderReadiness(getChecks(v));
+
+    const urlOk = isValidUrl(v.productUrl);
+    if (urlOk) {
+      richResultsLink.href = `https://search.google.com/test/rich-results?url=${encodeURIComponent(v.productUrl)}`;
+      richResultsLink.textContent = 'Test this page on Google Rich Results ↗';
+      richResultsLink.classList.remove('disabled');
+    } else {
+      richResultsLink.href = 'https://search.google.com/test/rich-results';
+      richResultsLink.textContent = 'Enter a Product URL above to test it on Google Rich Results';
+      richResultsLink.classList.add('disabled');
+    }
 
     if (currentPlatform === 'shopify') {
       const snippet = buildShopifySnippet();
