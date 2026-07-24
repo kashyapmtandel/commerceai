@@ -113,6 +113,24 @@ const jsonLd = [
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="schema-tool-card">
+                                <h2>Ratings &amp; reviews <span class="field-hint">optional</span></h2>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="sg-reviews-enabled">
+                                    Include an aggregate rating (only if you have real reviews)
+                                </label>
+                                <div class="schema-field-grid two-col mt-18" id="sgReviewFields" style="display:none">
+                                    <div class="form-group">
+                                        <label for="sg-rating-value">Average rating <span class="field-hint">1–5</span></label>
+                                        <input type="text" id="sg-rating-value" placeholder="4.6" inputmode="decimal" autocomplete="off">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sg-review-count">Number of reviews</label>
+                                        <input type="text" id="sg-review-count" placeholder="89" inputmode="numeric" autocomplete="off">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Output column -->

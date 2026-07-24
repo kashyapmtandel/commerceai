@@ -13,9 +13,14 @@ document.addEventListener('DOMContentLoaded', function () {
     gtin: document.getElementById('sg-gtin'),
     condition: document.getElementById('sg-condition'),
     priceValidUntil: document.getElementById('sg-price-valid-until'),
+    reviewsEnabled: document.getElementById('sg-reviews-enabled'),
+    ratingValue: document.getElementById('sg-rating-value'),
+    reviewCount: document.getElementById('sg-review-count'),
   };
 
   if (!form.name) return; // not on this page
+
+  const reviewFields = document.getElementById('sgReviewFields');
 
   const readinessList = document.getElementById('sgReadinessList');
   const readinessCount = document.getElementById('sgReadinessCount');
@@ -66,6 +71,16 @@ document.addEventListener('DOMContentLoaded', function () {
     return v !== '' && !isNaN(Number(v)) && Number(v) >= 0;
   }
 
+  function isValidRating(value) {
+    const v = (value || '').trim();
+    return v !== '' && !isNaN(Number(v)) && Number(v) >= 1 && Number(v) <= 5;
+  }
+
+  function isValidReviewCount(value) {
+    const v = (value || '').trim();
+    return v !== '' && /^\d+$/.test(v) && Number(v) >= 1;
+  }
+
   function gtinKey(digits) {
     if (digits.length === 8) return 'gtin8';
     if (digits.length === 12) return 'gtin12';
@@ -99,6 +114,16 @@ document.addEventListener('DOMContentLoaded', function () {
     if (v.availability) offers.availability = `https://schema.org/${v.availability}`;
     schema.offers = offers;
 
+    // Only ever emit aggregateRating with real, valid values — never a
+    // placeholder or zero rating, which Google's guidelines flag as spam.
+    if (v.reviewsEnabled && isValidRating(v.ratingValue) && isValidReviewCount(v.reviewCount)) {
+      schema.aggregateRating = {
+        '@type': 'AggregateRating',
+        ratingValue: v.ratingValue,
+        reviewCount: v.reviewCount,
+      };
+    }
+
     return schema;
   }
 
@@ -106,7 +131,15 @@ document.addEventListener('DOMContentLoaded', function () {
   // These are drop-in snippets using platform template variables, not the
   // form's test data — they pull real data automatically for every product.
   function buildShopifySnippet() {
-    return `{% comment %} Save as snippets/product-schema.liquid, then add {% render 'product-schema' %} to your product template {% endcomment %}
+    return `{% comment %}
+  Save as snippets/product-schema.liquid, then add {% render 'product-schema' %} to your product template.
+
+  Note on reviews: Shopify has no native review system. If you use a reviews
+  app (Judge.me, Loox, Yotpo, etc.), check its docs before adding your own
+  aggregateRating — most of these apps already inject their own Product
+  schema with review data, and having two conflicting schema blocks on the
+  same page is worse than having one.
+{% endcomment %}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org/",
@@ -150,6 +183,18 @@ function commerceai_product_schema() {
             'availability'  => $product->is_in_stock() ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
         ],
     ];
+
+    // Only add aggregateRating if WooCommerce actually has reviews for this
+    // product — never emit a zero or placeholder rating.
+    $review_count = (int) $product->get_review_count();
+    if ( $review_count > 0 ) {
+        $schema['aggregateRating'] = [
+            '@type'       => 'AggregateRating',
+            'ratingValue' => $product->get_average_rating(),
+            'reviewCount' => $review_count,
+        ];
+    }
+
     echo '<script type="application/ld+json">' . wp_json_encode( $schema ) . '</script>';
 }`;
   }
@@ -160,7 +205,7 @@ function commerceai_product_schema() {
     const imageOk = isValidUrl(v.image);
     const priceOk = isValidPrice(v.price);
 
-    return [
+    const checks = [
       {
         title: 'Product name',
         desc: 'Required by Google for a valid Product listing.',
@@ -198,6 +243,27 @@ function commerceai_product_schema() {
         msg: v.availability.trim() ? 'Looks good.' : 'Not set.',
       },
     ];
+
+    if (v.reviewsEnabled) {
+      const ratingOk = isValidRating(v.ratingValue);
+      const countOk = isValidReviewCount(v.reviewCount);
+      checks.push(
+        {
+          title: 'Average rating',
+          desc: 'Must be between 1 and 5.',
+          status: ratingOk ? 'pass' : v.ratingValue.trim() ? 'warn' : 'skip',
+          msg: ratingOk ? 'Looks good.' : v.ratingValue.trim() ? 'Enter a number between 1 and 5.' : 'Not filled in yet.',
+        },
+        {
+          title: 'Review count',
+          desc: 'Whole number, at least 1.',
+          status: countOk ? 'pass' : v.reviewCount.trim() ? 'warn' : 'skip',
+          msg: countOk ? 'Looks good.' : v.reviewCount.trim() ? 'Enter a whole number of 1 or more.' : 'Not filled in yet.',
+        }
+      );
+    }
+
+    return checks;
   }
 
   function cardClass(status) {
@@ -252,6 +318,9 @@ function commerceai_product_schema() {
       gtin: form.gtin.value,
       condition: form.condition.value,
       priceValidUntil: form.priceValidUntil.value,
+      reviewsEnabled: form.reviewsEnabled.checked,
+      ratingValue: form.ratingValue.value,
+      reviewCount: form.reviewCount.value,
     };
 
     const allReady = renderReadiness(getChecks(v));
@@ -300,6 +369,10 @@ function commerceai_product_schema() {
 
   Object.keys(form).forEach(function (key) {
     if (form[key]) form[key].addEventListener('input', render);
+  });
+
+  form.reviewsEnabled.addEventListener('change', function () {
+    reviewFields.style.display = form.reviewsEnabled.checked ? 'grid' : 'none';
   });
 
   // ─── Copy to clipboard ────────────────────────────────────────
